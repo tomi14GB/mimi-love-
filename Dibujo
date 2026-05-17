@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuestra Pizarra 🕷️💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Satisfy&family=Nunito:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:#080814;font-family:'Nunito',sans-serif;color:#fff;overflow-x:hidden}
+.bg{position:fixed;inset:0;background:radial-gradient(ellipse at 20% 50%,#1a0a2e,#080814);z-index:0;pointer-events:none}
+
+/* LOGIN */
+#loginScreen{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:1.5rem}
+.login-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,60,60,0.25);border-radius:24px;padding:2.5rem 2rem;max-width:380px;width:100%;text-align:center;backdrop-filter:blur(12px);position:relative;overflow:hidden}
+.login-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#e62429,#c8a0ff,#e62429);background-size:200% 100%;animation:shimmer 3s infinite}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.login-title{font-family:'Satisfy',cursive;font-size:2rem;color:#fff;text-shadow:0 0 20px rgba(255,60,60,0.4);margin-bottom:0.3rem}
+.login-sub{font-size:0.82rem;color:rgba(255,255,255,0.4);margin-bottom:1.8rem;letter-spacing:1px}
+.user-btns{display:flex;gap:0.8rem;margin-bottom:1.2rem}
+.user-btn{flex:1;padding:0.9rem 0.5rem;border-radius:14px;border:2px solid transparent;background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.6);font-family:'Nunito',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;transition:all 0.3s}
+.user-btn.selected{background:rgba(230,36,41,0.15);border-color:#e62429;color:#fff}
+.user-btn.gwen.selected{background:rgba(200,160,255,0.15);border-color:#c8a0ff;color:#fff}
+.pass-input{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:0.8rem 1rem;color:#fff;font-family:'Nunito',sans-serif;font-size:0.95rem;outline:none;margin-bottom:1rem;transition:border 0.3s}
+.pass-input:focus{border-color:rgba(230,36,41,0.5)}
+.login-btn{width:100%;background:linear-gradient(135deg,#e62429,#8b0000);color:white;border:none;padding:0.85rem;border-radius:50px;font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 4px 20px rgba(230,36,41,0.3);transition:transform 0.2s}
+.login-btn:hover{transform:scale(1.03)}
+.login-err{color:#ff7070;font-size:0.82rem;margin-top:0.5rem;display:none}
+.hearts-deco{font-size:1.2rem;letter-spacing:0.3rem;margin-bottom:1rem}
+
+/* APP */
+#appScreen{position:relative;z-index:1;display:none;flex-direction:column;min-height:100vh}
+.topbar{background:rgba(255,255,255,0.03);border-bottom:1px solid rgba(255,60,60,0.15);padding:0.7rem 1.2rem;display:flex;align-items:center;justify-content:space-between;gap:0.5rem;flex-wrap:wrap;position:sticky;top:0;z-index:20;backdrop-filter:blur(10px)}
+.topbar-title{font-family:'Satisfy',cursive;font-size:1.3rem;color:#fff}
+.user-badge{background:rgba(230,36,41,0.2);border:1px solid rgba(230,36,41,0.4);border-radius:50px;padding:0.25rem 0.8rem;font-size:0.78rem;color:#ff9999;font-weight:600}
+.user-badge.gwen{background:rgba(200,160,255,0.2);border-color:rgba(200,160,255,0.4);color:#c8a0ff}
+.logout-btn{background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.4);border-radius:50px;padding:0.25rem 0.8rem;font-size:0.75rem;cursor:pointer;font-family:'Nunito',sans-serif}
+
+/* TABS */
+.tabs{display:flex;gap:0.5rem;padding:0.8rem 1.2rem;border-bottom:1px solid rgba(255,255,255,0.06)}
+.tab{background:transparent;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);border-radius:50px;padding:0.4rem 1.1rem;font-size:0.82rem;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:600;transition:all 0.3s}
+.tab.active{background:rgba(230,36,41,0.2);border-color:#e62429;color:#fff}
+
+/* CANVAS SECTION */
+#canvasSection{display:flex;flex-direction:column;flex:1;padding:1rem}
+.canvas-toolbar{display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;margin-bottom:0.8rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:0.7rem 1rem}
+.tool-btn{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);border-radius:10px;padding:0.4rem 0.7rem;font-size:0.8rem;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.2s}
+.tool-btn.active{background:rgba(230,36,41,0.25);border-color:#e62429;color:#fff}
+.color-swatch{width:26px;height:26px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:transform 0.2s}
+.color-swatch.active{border-color:#fff;transform:scale(1.2)}
+.size-slider{-webkit-appearance:none;appearance:none;width:70px;height:4px;border-radius:2px;background:rgba(255,255,255,0.15);outline:none;cursor:pointer}
+.size-slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#e62429;cursor:pointer}
+.canvas-wrap{position:relative;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);background:#0f0f1e;flex:1;min-height:340px}
+#mainCanvas{display:block;width:100%;height:100%;cursor:crosshair;touch-action:none}
+.text-overlay-input{position:absolute;background:transparent;border:1px dashed rgba(255,255,255,0.4);color:#fff;font-family:'Nunito',sans-serif;font-size:1rem;outline:none;padding:2px 6px;border-radius:4px;min-width:80px;resize:none;overflow:hidden;display:none}
+.canvas-actions{display:flex;gap:0.6rem;margin-top:0.8rem;flex-wrap:wrap}
+.save-btn{background:linear-gradient(135deg,#e62429,#8b0000);color:#fff;border:none;border-radius:50px;padding:0.65rem 1.5rem;font-family:'Nunito',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(230,36,41,0.3);transition:transform 0.2s}
+.save-btn:hover{transform:scale(1.04)}
+.save-btn.secondary{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);box-shadow:none;color:rgba(255,255,255,0.7)}
+.msg-input-wrap{display:flex;gap:0.5rem;margin-top:0.5rem}
+.msg-input{flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:0.65rem 1rem;color:#fff;font-family:'Nunito',sans-serif;font-size:0.88rem;outline:none}
+.msg-input:focus{border-color:rgba(230,36,41,0.4)}
+
+/* GALLERY */
+#gallerySection{display:none;padding:1rem;flex:1}
+.gallery-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.gallery-title{font-family:'Playfair Display',serif;font-size:1.2rem;color:#fff}
+.gallery-empty{text-align:center;padding:3rem 1rem;color:rgba(255,255,255,0.3);font-size:0.9rem}
+.entries-list{display:flex;flex-direction:column;gap:1rem}
+.entry-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:18px;overflow:hidden;transition:border 0.3s}
+.entry-card:hover{border-color:rgba(230,36,41,0.25)}
+.entry-header{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 1rem 0.5rem}
+.entry-author{font-size:0.78rem;font-weight:700;letter-spacing:1px}
+.entry-author.miles{color:#ff9999}
+.entry-author.gwen{color:#c8a0ff}
+.entry-date{font-size:0.72rem;color:rgba(255,255,255,0.35)}
+.entry-msg{padding:0 1rem 0.6rem;font-size:0.88rem;color:rgba(255,255,255,0.7);line-height:1.5;font-style:italic}
+.entry-img{width:100%;display:block;border-top:1px solid rgba(255,255,255,0.06)}
+.delete-btn{background:transparent;border:none;color:rgba(255,255,255,0.2);cursor:pointer;font-size:0.75rem;padding:0.2rem 0.4rem;border-radius:6px;transition:color 0.2s}
+.delete-btn:hover{color:#ff7070}
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:rgba(100,220,150,0.15);border:1px solid rgba(100,220,150,0.4);color:#a0ffcc;padding:0.6rem 1.5rem;border-radius:50px;font-size:0.85rem;font-weight:600;z-index:200;opacity:0;transition:opacity 0.3s;pointer-events:none}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="hearts-deco">❤️ 🕷️ ❤️</div>
+    <div class="login-title">Nuestra Pizarra</div>
+    <p class="login-sub">¿quién eres?</p>
+    <div class="user-btns">
+      <button class="user-btn" id="btnMiles" onclick="selectUser('miles')">🕷️ Miles (Tomi)</button>
+      <button class="user-btn gwen" id="btnGwen" onclick="selectUser('gwen')">🌻 Gwen (Mimi)</button>
+    </div>
+    <input class="pass-input" type="password" id="passInput" placeholder="Contraseña..." onkeydown="if(event.key==='Enter')doLogin()"/>
+    <button class="login-btn" onclick="doLogin()">Entrar 💕</button>
+    <p class="login-err" id="loginErr">Contraseña incorrecta 💔</p>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="appScreen">
+  <div class="topbar">
+    <span class="topbar-title">🕷️ Nuestra Pizarra 💕</span>
+    <div style="display:flex;align-items:center;gap:0.5rem">
+      <span class="user-badge" id="userBadge"></span>
+      <button class="logout-btn" onclick="logout()">Salir</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" id="tabDraw" onclick="switchTab('draw')">🎨 Dibujar</button>
+    <button class="tab" id="tabGallery" onclick="switchTab('gallery')">📖 Guardados</button>
+  </div>
+
+  <!-- CANVAS -->
+  <div id="canvasSection">
+    <div class="canvas-toolbar">
+      <button class="tool-btn active" id="toolPen" onclick="setTool('pen')">✏️ Pincel</button>
+      <button class="tool-btn" id="toolEraser" onclick="setTool('eraser')">🧹 Borrar</button>
+      <button class="tool-btn" id="toolText" onclick="setTool('text')">💬 Texto</button>
+      <div style="width:1px;height:20px;background:rgba(255,255,255,0.1);margin:0 0.2rem"></div>
+      <div class="color-swatch active" style="background:#ffffff" onclick="setColor('#ffffff',this)"></div>
+      <div class="color-swatch" style="background:#ff6b6b" onclick="setColor('#ff6b6b',this)"></div>
+      <div class="color-swatch" style="background:#c8a0ff" onclick="setColor('#c8a0ff',this)"></div>
+      <div class="color-swatch" style="background:#ffd93d" onclick="setColor('#ffd93d',this)"></div>
+      <div class="color-swatch" style="background:#6bcb77" onclick="setColor('#6bcb77',this)"></div>
+      <div class="color-swatch" style="background:#ff9de2" onclick="setColor('#ff9de2',this)"></div>
+      <div style="width:1px;height:20px;background:rgba(255,255,255,0.1);margin:0 0.2rem"></div>
+      <input type="range" class="size-slider" id="sizeSlider" min="1" max="30" value="4" oninput="setBrushSize(this.value)">
+    </div>
+
+    <div class="canvas-wrap" id="canvasWrap">
+      <canvas id="mainCanvas"></canvas>
+      <textarea class="text-overlay-input" id="textInput" rows="1" placeholder="Escribe aquí..."></textarea>
+    </div>
+
+    <div class="msg-input-wrap">
+      <input class="msg-input" id="msgInput" type="text" placeholder="Deja un mensajito para acompañar el dibujo... 💕" maxlength="200"/>
+    </div>
+
+    <div class="canvas-actions">
+      <button class="save-btn" onclick="saveEntry()">💾 Guardar dibujo</button>
+      <button class="save-btn secondary" onclick="clearCanvas()">🗑️ Limpiar</button>
+    </div>
+  </div>
+
+  <!-- GALLERY -->
+  <div id="gallerySection">
+    <div class="gallery-header">
+      <span class="gallery-title">📖 Dibujos guardados</span>
+    </div>
+    <div id="entriesList" class="entries-list"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── AUTH ──────────────────────────────────────────────
+const USERS = {
+  miles: { pass: 'tomi2026', label: '🕷️ Miles (Tomi)', cls: 'miles' },
+  gwen:  { pass: 'mimi2026', label: '🌻 Gwen (Mimi)', cls: 'gwen' }
+};
+let currentUser = null;
+let selectedUser = null;
+
+function selectUser(u) {
+  selectedUser = u;
+  document.getElementById('btnMiles').classList.toggle('selected', u==='miles');
+  document.getElementById('btnGwen').classList.toggle('selected', u==='gwen');
+  document.getElementById('passInput').focus();
+}
+
+function doLogin() {
+  if (!selectedUser) { showErr('Selecciona quién eres 💕'); return; }
+  const pass = document.getElementById('passInput').value;
+  if (pass === USERS[selectedUser].pass) {
+    currentUser = selectedUser;
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('appScreen').style.display = 'flex';
+    const badge = document.getElementById('userBadge');
+    badge.textContent = USERS[currentUser].label;
+    badge.className = 'user-badge ' + USERS[currentUser].cls;
+    initCanvas();
+  } else {
+    showErr('Contraseña incorrecta 💔');
+  }
+}
+
+function showErr(msg) {
+  const el = document.getElementById('loginErr');
+  el.textContent = msg;
+  el.style.display = 'block';
+  setTimeout(()=>el.style.display='none', 2500);
+}
+
+function logout() {
+  currentUser = null;
+  selectedUser = null;
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('appScreen').style.display = 'none';
+  document.getElementById('passInput').value = '';
+  document.getElementById('btnMiles').classList.remove('selected');
+  document.getElementById('btnGwen').classList.remove('selected');
+}
+
+// ── TABS ──────────────────────────────────────────────
+function switchTab(tab) {
+  document.getElementById('tabDraw').classList.toggle('active', tab==='draw');
+  document.getElementById('tabGallery').classList.toggle('active', tab==='gallery');
+  document.getElementById('canvasSection').style.display = tab==='draw' ? 'flex' : 'none';
+  document.getElementById('gallerySection').style.display = tab==='gallery' ? 'block' : 'none';
+  if (tab==='gallery') loadGallery();
+}
+
+// ── CANVAS ────────────────────────────────────────────
+let canvas, ctx, painting=false, tool='pen', color='#ffffff', brushSize=4;
+let lastX=0, lastY=0;
+
+function initCanvas() {
+  canvas = document.getElementById('mainCanvas');
+  ctx = canvas.getContext('2d');
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  canvas.addEventListener('mousedown', startDraw);
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', stopDraw);
+  canvas.addEventListener('mouseleave', stopDraw);
+  canvas.addEventListener('touchstart', e=>{ e.preventDefault(); startDraw(e.touches[0]); }, {passive:false});
+  canvas.addEventListener('touchmove', e=>{ e.preventDefault(); draw(e.touches[0]); }, {passive:false});
+  canvas.addEventListener('touchend', stopDraw);
+  canvas.addEventListener('click', handleTextClick);
+}
+
+function resizeCanvas() {
+  const wrap = document.getElementById('canvasWrap');
+  const w = wrap.clientWidth;
+  const h = Math.max(340, wrap.clientHeight);
+  const img = ctx ? ctx.getImageData(0, 0, canvas.width, canvas.height) : null;
+  canvas.width = w;
+  canvas.height = h || 400;
+  ctx.fillStyle = '#0f0f1e';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  if (img) ctx.putImageData(img, 0, 0);
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+}
+
+function getPos(e) {
+  const r = canvas.getBoundingClientRect();
+  return {
+    x: (e.clientX - r.left) * (canvas.width / r.width),
+    y: (e.clientY - r.top) * (canvas.height / r.height)
+  };
+}
+
+function startDraw(e) {
+  if (tool === 'text') return;
+  painting = true;
+  const p = getPos(e);
+  lastX = p.x; lastY = p.y;
+  ctx.beginPath();
+  ctx.arc(p.x, p.y, (tool==='eraser'?brushSize*3:brushSize)/2, 0, Math.PI*2);
+  ctx.fillStyle = tool==='eraser' ? '#0f0f1e' : color;
+  ctx.fill();
+}
+
+function draw(e) {
+  if (!painting) return;
+  const p = getPos(e);
+  ctx.beginPath();
+  ctx.moveTo(lastX, lastY);
+  ctx.lineTo(p.x, p.y);
+  ctx.strokeStyle = tool==='eraser' ? '#0f0f1e' : color;
+  ctx.lineWidth = tool==='eraser' ? brushSize*3 : brushSize;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.stroke();
+  lastX = p.x; lastY = p.y;
+}
+
+function stopDraw() { painting = false; }
+
+function handleTextClick(e) {
+  if (tool !== 'text') return;
+  const p = getPos(e);
+  const ti = document.getElementById('textInput');
+  const wrap = document.getElementById('canvasWrap');
+  const r = canvas.getBoundingClientRect();
+  const wr = wrap.getBoundingClientRect();
+  ti.style.display = 'block';
+  ti.style.left = (e.clientX - wr.left) + 'px';
+  ti.style.top = (e.clientY - wr.top) + 'px';
+  ti.style.color = color;
+  ti.value = '';
+  ti.focus();
+  ti.onkeydown = function(ev) {
+    if (ev.key === 'Enter' && !ev.shiftKey) {
+      ev.preventDefault();
+      const txt = ti.value.trim();
+      if (txt) {
+        ctx.font = `${Math.max(14, brushSize*3)}px Nunito, sans-serif`;
+        ctx.fillStyle = color;
+        ctx.fillText(txt, p.x, p.y);
+      }
+      ti.style.display = 'none';
+      ti.value = '';
+    }
+    if (ev.key === 'Escape') { ti.style.display='none'; ti.value=''; }
+  };
+}
+
+function setTool(t) {
+  tool = t;
+  ['pen','eraser','text'].forEach(x => {
+    document.getElementById('tool'+x.charAt(0).toUpperCase()+x.slice(1)).classList.toggle('active', x===t);
+  });
+  canvas.style.cursor = t==='text' ? 'text' : 'crosshair';
+}
+
+function setColor(c, el) {
+  color = c;
+  document.querySelectorAll('.color-swatch').forEach(s=>s.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function setBrushSize(v) { brushSize = parseInt(v); }
+
+function clearCanvas() {
+  ctx.fillStyle = '#0f0f1e';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  document.getElementById('msgInput').value = '';
+}
+
+// ── STORAGE ───────────────────────────────────────────
+async function saveEntry() {
+  const msg = document.getElementById('msgInput').value.trim();
+  const imgData = canvas.toDataURL('image/jpeg', 0.7);
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('es-CL', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+  const timeStr = now.toLocaleTimeString('es-CL', {hour:'2-digit', minute:'2-digit'});
+
+  const entry = {
+    id: Date.now(),
+    author: currentUser,
+    msg: msg,
+    date: dateStr,
+    time: timeStr,
+    img: imgData
+  };
+
+  try {
+    // Cargar entradas existentes
+    let entries = [];
+    try {
+      const existing = await window.storage.get('pizarra-entries', true);
+      if (existing) entries = JSON.parse(existing.value);
+    } catch(e) {}
+
+    entries.unshift(entry);
+    // Guardar solo las últimas 30
+    if (entries.length > 30) entries = entries.slice(0, 30);
+
+    await window.storage.set('pizarra-entries', JSON.stringify(entries), true);
+    showToast('¡Guardado! 💕');
+    clearCanvas();
+    setTimeout(() => switchTab('gallery'), 800);
+  } catch(e) {
+    showToast('Error al guardar 😔');
+    console.error(e);
+  }
+}
+
+async function loadGallery() {
+  const list = document.getElementById('entriesList');
+  list.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.3);padding:2rem">Cargando... 🌻</p>';
+
+  try {
+    let entries = [];
+    try {
+      const data = await window.storage.get('pizarra-entries', true);
+      if (data) entries = JSON.parse(data.value);
+    } catch(e) {}
+
+    if (entries.length === 0) {
+      list.innerHTML = '<div class="gallery-empty">No hay dibujos aún.<br>¡Sé el primero en dejar uno! 🎨💕</div>';
+      return;
+    }
+
+    list.innerHTML = entries.map(e => `
+      <div class="entry-card" id="entry-${e.id}">
+        <div class="entry-header">
+          <span class="entry-author ${e.author}">${USERS[e.author].label}</span>
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <span class="entry-date">${e.date} · ${e.time}</span>
+            ${e.author === currentUser ? `<button class="delete-btn" onclick="deleteEntry(${e.id})">✕</button>` : ''}
+          </div>
+        </div>
+        ${e.msg ? `<p class="entry-msg">"${e.msg}"</p>` : ''}
+        <img class="entry-img" src="${e.img}" loading="lazy"/>
+      </div>
+    `).join('');
+  } catch(err) {
+    list.innerHTML = '<div class="gallery-empty">Error cargando 😔</div>';
+  }
+}
+
+async function deleteEntry(id) {
+  if (!confirm('¿Borrar este dibujo?')) return;
+  try {
+    const data = await window.storage.get('pizarra-entries', true);
+    let entries = data ? JSON.parse(data.value) : [];
+    entries = entries.filter(e => e.id !== id);
+    await window.storage.set('pizarra-entries', JSON.stringify(entries), true);
+    document.getElementById('entry-'+id)?.remove();
+    showToast('Borrado 🗑️');
+  } catch(e) { showToast('Error al borrar'); }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>
