@@ -51,9 +51,9 @@ body{min-height:100vh;background:#080814;font-family:'Nunito',sans-serif;overflo
 .counter-box{background:rgba(230,36,41,0.1);border:1px solid rgba(230,36,41,0.28);border-radius:14px;padding:0.9rem 1rem;min-width:70px}
 .counter-big{font-family:'Playfair Display',serif;font-size:2.2rem;color:#ff7070;font-weight:700;display:block;line-height:1}
 .counter-label{font-size:0.68rem;color:rgba(255,255,255,0.45);letter-spacing:2px;text-transform:uppercase;margin-top:0.2rem;display:block}
-.spoiler-btn{background:transparent;border:1px solid rgba(200,160,255,0.4);color:#c8a0ff;border-radius:50px;padding:0.6rem 1.5rem;font-family:'Nunito',sans-serif;font-size:0.85rem;cursor:pointer;margin-top:1.5rem}
-.spoiler-content{margin-top:1rem;background:rgba(200,160,255,0.07);border:1px solid rgba(200,160,255,0.25);border-radius:16px;padding:1.2rem;display:none}
-.spoiler-content.show{display:block;animation:fadeIn 0.5s ease}
+
+
+
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .quote{font-family:'Playfair Display',serif;font-style:italic;font-size:1.05rem;color:rgba(255,200,200,0.85);line-height:1.7;margin:1rem 0;padding:0.8rem 1.2rem;border-left:2px solid rgba(230,36,41,0.5);text-align:left}
 .game-title{font-family:'Satisfy',cursive;font-size:clamp(1.6rem,6vw,2.4rem);color:#ff9de2;margin-bottom:0.5rem}
@@ -143,7 +143,7 @@ body{min-height:100vh;background:#080814;font-family:'Nunito',sans-serif;overflo
     <p class="scene-number">Capítulo 3</p>
     <span class="spider-icon">💋</span>
     <h2 class="title">El beso que <em>me robaste</em></h2>
-    <p class="body-text">No me lo esperaba, y por eso fue tan bonito.<br><br>Quería tanto besarte ese día, pero <strong>te anticipaste</strong>.<br><br>Y después, como estuvimos dándonos amor y cariño que tanto nos prometimos por mensajes… estaba pasando de verdad.<br><br>Yo me sentía en un sueño con mi solcito besando mi cara. ☀️<br><br>Y deseo de corazón que en este universo <strong>estemos juntos</strong>, y estoy seguro de que así será. 🌌</p>
+    <p class="body-text">No me lo esperaba, y por eso fue tan bonito.<br><br>Quería tanto besarte ese día, pero <strong>te anticipaste</strong>.<br><br>Y después, como estuvimos dándonos amor y cariño que tanto nos prometimos por mensajes… estaba pasando de verdad.<br><br>Yo me sentía en un sueño con mi solcito besando mi cara. ☀️</p>
     <div class="hearts-float"><span class="heart">💋</span><span class="heart">❤️</span><span class="heart">💋</span><span class="heart">❤️</span><span class="heart">💋</span></div>
     <button class="nav-btn" onclick="nextScene()">Seguir leyendo →</button>
   </div>
@@ -154,9 +154,9 @@ body{min-height:100vh;background:#080814;font-family:'Nunito',sans-serif;overflo
   <div class="card">
     <p class="scene-number">Capítulo 4</p>
     <span class="spider-icon">🌃</span>
-    <h2 class="title">Nuestras <em>caminatas</em></h2>
+    <h2 class="title">Nuestras caminatas <em>nocturnas</em></h2>
     <div class="sunflower-row">🌻🌙🌻</div>
-    <p class="body-text">De mis cosas favoritas es caminar contigo. Se siente mágico, como si fuera una película.<br><br>Que nos besáramos tanto al salir y caminar. <strong>Abrazarnos, hacernos cariño, cosquillas y molestarnos.</strong><br><br>Me hace sentir que estoy en una película contigo.<br><br>El tiempo pasa tan rápido en esos instantes. 🎬❤️</p>
+    <p class="body-text">De mis cosas favoritas son nuestras caminatas nocturnas por el centro de Santiago. Se siente mágico, como si fuera una película.<br><br>Que nos besáramos tanto al salir y caminar. <strong>Abrazarnos, hacernos cariño, cosquillas y molestarnos.</strong><br><br>Me hace sentir que estoy en una película contigo.<br><br>El tiempo pasa tan rápido en esos instantes. 🎬❤️</p>
     <div class="hearts-float"><span class="heart">🌃</span><span class="heart">❤️</span><span class="heart">🌻</span><span class="heart">❤️</span><span class="heart">🌃</span></div>
     <button class="nav-btn" onclick="nextScene()">Seguir leyendo →</button>
   </div>
@@ -200,7 +200,7 @@ body{min-height:100vh;background:#080814;font-family:'Nunito',sans-serif;overflo
         </svg>
       </div>
     </div>
-    <p class="body-text">Miles siempre encuentra a Gwen.<br>Sin importar el universo. Sin importar la distancia.<br><br>Y yo te encontré a ti, Mimi. 🌻<br><br>En República, entre los mismos amigos, en las mismas calles.<br><strong>Siempre cerca, hasta que fue el momento.</strong> 💜</p>
+    <p class="body-text">Miles siempre encuentra a Gwen.<br>Sin importar el universo. Sin importar la distancia.<br><br>Y yo te encontré a ti, Mimi. 🌻<br><br>En República, entre los mismos amigos, en las mismas calles.<br><strong>Siempre cerca, hasta que fue el momento.</strong> 💜<br><br>Y deseo de corazón que en este universo <strong>estemos juntos</strong>, y estoy seguro de que así será. 🌌</p>
     <div class="hearts-float"><span class="heart">🕷️</span><span class="heart">❤️</span><span class="heart">🕸️</span><span class="heart">❤️</span><span class="heart">🕷️</span></div>
     <button class="nav-btn" onclick="nextScene()">Ver el contador →</button>
   </div>
@@ -221,11 +221,7 @@ body{min-height:100vh;background:#080814;font-family:'Nunito',sans-serif;overflo
     </div>
     <p class="body-text">Gracias por existir, Mimi.<br>Por robarme ese beso. Por caminar conmigo.<br>Por hacer que mi vida se sienta una <strong>película</strong>. 🕷️❤️</p>
     <div class="hearts-float"><span class="heart">❤️</span><span class="heart">🌻</span><span class="heart">🕷️</span><span class="heart">🌻</span><span class="heart">❤️</span></div>
-    <button class="spoiler-btn" onclick="toggleSpoiler()">🔮 Próximo evento... (spoiler)</button>
-    <div class="spoiler-content" id="spoilerBox">
-      <p style="font-family:'Playfair Display',serif;font-size:1.1rem;color:#c8a0ff;margin-bottom:0.5rem">💍 Lo que viene...</p>
-      <p style="font-size:0.9rem;color:rgba(255,255,255,0.65);line-height:1.7">Ser novios. ❤️<br><br>Porque todo lo que hemos vivido, todo lo que nos hemos dicho, todo lo que sentimos… merece un nombre bonito.<br><br><strong style="color:#c8a0ff;">Pronto, Mimi. 🌻</strong></p>
-    </div>
+
     <button class="nav-btn" onclick="nextScene()" style="margin-top:1rem;">Un último capítulo... 💌</button>
   </div>
   <div class="progress-dots" id="dots6"></div>
@@ -268,7 +264,7 @@ function renderDots(id){const el=document.getElementById('dots'+id);if(!el)retur
 function showScene(n){const prev=current;document.getElementById('scene'+prev).classList.remove('active');setTimeout(()=>{document.getElementById('scene'+prev).classList.add('scene-hidden');const next=document.getElementById('scene'+n);next.classList.remove('scene-hidden');requestAnimationFrame(()=>requestAnimationFrame(()=>next.classList.add('active')));renderDots(n);current=n;if(n===6)startCounter();},400);}
 function nextScene(){if(current<TOTAL-1)showScene(current+1);}
 function restart(){resetGame();showScene(0);}
-function toggleSpoiler(){document.getElementById('spoilerBox').classList.toggle('show');}
+
 let counterInterval=null;
 function startCounter(){if(counterInterval)clearInterval(counterInterval);function update(){const start=new Date('2026-03-06T00:00:00');const now=new Date();const diff=Math.max(0,now-start);const secs=Math.floor(diff/1000);const mins=Math.floor(secs/60);const hours=Math.floor(mins/60);const days=Math.floor(hours/24);document.getElementById('cnt-days').textContent=days;document.getElementById('cnt-hours').textContent=hours%24;document.getElementById('cnt-mins').textContent=mins%60;document.getElementById('cnt-secs').textContent=secs%60;}update();counterInterval=setInterval(update,1000);}
 function updateHearts(){const hearts=document.querySelectorAll('#triesRow .try-heart');hearts.forEach((h,i)=>{h.classList.toggle('lost',i>=tries);});}
